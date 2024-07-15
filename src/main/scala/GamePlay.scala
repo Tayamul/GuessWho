@@ -2,6 +2,7 @@ import scala.collection.mutable
 
 object GamePlay extends App {
 
+  // Map of the individual Characters
   val individualsMap: Map[Int, Character] = Map(
     1 -> Individuals.p1,
     2 -> Individuals.p2,
@@ -29,10 +30,11 @@ object GamePlay extends App {
     24 -> Individuals.p24
   )
 
+  // Finding a random character for you to guess
   val randomCharacter = new scala.util.Random
   val characterToGuess = individualsMap(randomCharacter.nextInt(25))
 
-  // pattern matching
+  // pattern matching characteristics you choose against the characters in the map
   def matchCharacteristics(individualsMap: Map[Int, Character], feature: String, value: Any): Map[Int, Character] = {
     individualsMap.filter {
       case (_, BaldMan(name, glasses, facialHair, hat, eyeColour)) => feature match {
@@ -71,39 +73,61 @@ object GamePlay extends App {
     }
   }
 
+  // Play round function returns the filtered characters from pattern matching
   def playRound(characters: Map[Int, Character], feature: String, value: Any): Map[Int, Character] = {
     val remainingCharacters = matchCharacteristics(characters: Map
       [Int, Character], feature, value)
     remainingCharacters
   }
 
+  // exit boolean, when true the game ends
   var exit: Boolean = false
 
+  // Remaining Characters on the virtual game board
   var remainingCharacters : Map [Int, Character] = individualsMap
 
-  // Accepted Strings as a feature in a set
+  // Accepted strings to use for pattern matching
   val acceptedStrings: Seq[String] = Seq("hair", "glasses", "facialhair", "eyecolour", "haircolour", "hat", "gender")
-  var remainingFeatures: Seq[String] = Seq("hair", "glasses", "facialhair", "eyecolour", "eyecolour", "eyecolour", "haircolour", "hat", "gender", "haircolour", "haircolour", "haircolour", "eyecolour")
 
+  // Accepted Strings for pattern matching that have not been used yet
+  var remainingFeatures: Seq[String] = Seq("hair", "glasses", "facialhair", "eyecolour", "eyecolour", "eyecolour", "haircolour", "hat", "gender", "haircolour", "haircolour", "haircolour")
+
+  // Remaining Hair Options
   var remainingHairColours: Seq[String] = Seq("red", "brown", "blonde", "black", "grey")
+
+  // Remaining Eye Options
   var remainingEyeColours: Seq[String] = Seq("blue", "brown", "green")
 
   def gameLoop( ): Unit = {
   do {
 
+    // Creates a Set out of the remaining Q's, Removes duplicates for us to print
     val remainingQuestions: Set[String] = remainingFeatures.toSet
 
-
+    // Tells you what questions are still to be asked
     println("You have the remaining characteristics to choose from:")
     remainingQuestions.foreach( feature => println(feature))
 
-
+    // reads user response for main category
     var response : String = scala.io.StdIn.readLine().toLowerCase() // to lower case
     println(response)
 
+    // Checks if the response is still valid i.e. if you haven't asked already
+    if(!remainingFeatures.contains(response) && acceptedStrings.contains(response)) {
+      println("you have already asked this question, try again")
+      gameLoop()
+    }
+    // if the user puts in an invalid string/input restart the turn
+    else if (!acceptedStrings.contains(response)) {
+      println("That selection is not available please try again")
+      gameLoop()
+    }
+    // initialised for subcategory i.e. colour
     var value: Any = ""
 
+    // based on the primary response allows you to pick the sub category
     response match {
+      // When Your primary selection is haircolour
       case "haircolour" => {
         println("Which colour hair:")
         remainingHairColours.foreach {
@@ -136,17 +160,37 @@ object GamePlay extends App {
       }
     }
 
+    // This will eventually check character to Guess!!!!
     if (acceptedStrings.contains(response)) {
 
     // This creates a filtered list of characters based on a feature - returns all people with hats
+      val updatedCharacters: Map[Int, Character] = playRound(individualsMap: Map [Int, Character], response, value)
 
-      var updatedCharacters = playRound(individualsMap: Map [Int, Character], response, value)
-      println(updatedCharacters)
+      // This filters the remaining characters in the game board to get rid of those that match the criteria
       remainingCharacters = remainingCharacters.filter {
         case (key, _) => updatedCharacters.contains(key)
       }
 
+        if(remainingFeatures.contains(response)) {
+          // Once used, the feature is then found in the Seq and removed so it cannot be searched for again
+          val index = remainingFeatures.indexOf(response)
+          remainingFeatures = remainingFeatures.patch(index, Nil, 1)
+        }
+
+        // if filtering by a string value
+        if(response == "haircolour") {
+          // filter out the used value
+          remainingHairColours = remainingHairColours.filterNot( _ == value)
+        } else if (response == "eyecolour") {
+          // filter out the used value
+          remainingEyeColours = remainingEyeColours.filterNot( _ == value)
+        } else {
+          println(404)
+        }
+
+
     } else {
+      // this is error handling
       println("error message here")
       gameLoop()
     }
@@ -160,11 +204,13 @@ object GamePlay extends App {
 
     remainingCharacters.foreach(println)
 
+        // This ends the game when we only have one character left
         if (remainingCharacters.size == 1) {
           exit = true
         }
 
   } while (!exit)
+
 
   println("Game Ended")
   }
