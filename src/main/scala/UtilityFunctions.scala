@@ -1,13 +1,9 @@
-case class UtilityFunctions () {
+object UtilityFunctions {
 
-  // Not currently used
-  def iterateToList(obj: AnyRef): List[Any] = {
-    val fields = obj.getClass.getDeclaredFields
-    fields.filter(_.getName != "MODULE$").map {
-      field =>
-        field.setAccessible(true)
-        field.get(obj)
-    }.toList
+  def randomChars (individualsMap: Map[Int, Character]): Character = {
+    val randomCharacter = new scala.util.Random
+    val characterToGuess = individualsMap(randomCharacter.nextInt(24) + 1)
+    characterToGuess
   }
 
 }

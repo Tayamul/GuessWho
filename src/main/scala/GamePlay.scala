@@ -36,9 +36,7 @@ object GamePlay extends App {
   )
 
   // Finding a random character for you to guess
-  val randomCharacter = new scala.util.Random
-  val characterToGuess = individualsMap(randomCharacter.nextInt(24) + 1)
-  println(characterToGuess)
+  val characterToGuess = UtilityFunctions.randomChars(individualsMap)
 
   // pattern matching characteristics you choose against the characters in the map
   def matchCharacteristics(individualsMap: Map[Int, Character], feature: String, value: Any): Map[Int, Character] = {
@@ -170,7 +168,7 @@ object GamePlay extends App {
         if(characterToGuess.name.toLowerCase() == guess) {
 
           def gameWin (): Unit = {
-            println("Congratulations")
+            println("🥳🎉 Congratulations!! 🥳🎉")
             Thread sleep 2000
             gameLoop(exit = true)
           }
