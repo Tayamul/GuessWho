@@ -38,53 +38,6 @@ object GamePlay extends App {
   // Finding a random character for you to guess
   val characterToGuess = UtilityFunctions.randomChars(individualsMap)
 
-  // pattern matching characteristics you choose against the characters in the map
-  def matchCharacteristics(individualsMap: Map[Int, Character], feature: String, value: Any): Map[Int, Character] = {
-    individualsMap.filter {
-      case (_, BaldMan(name, glasses, facialHair, hat, eyeColour)) => feature match {
-        case "name" => name == value
-        case "glasses" => glasses == value
-        case "facialhair" => facialHair == value
-        case "hat" => hat == value
-        case "eyecolour" => eyeColour == value
-        case "hair" => false == value
-        case "haircolour" => true == value
-        case "gender" => "male" == value
-        case _ => true
-      }
-      case (_, HairMan(name, glasses, facialHair, hairColour, hat, eyeColour)) => feature match {
-        case "name" => name == value
-        case "glasses" => glasses == value
-        case "facialhair" => facialHair == value
-        case "haircolour" => hairColour == value
-        case "hat" => hat == value
-        case "eyecolour" => eyeColour == value
-        case "hair" => true == value
-        case "gender" => "male" == value
-        case _ => true
-      }
-      case (_, Female(name, glasses, hairColour, hat, eyeColour)) => feature match {
-        case "name" => name == value
-        case "glasses" => glasses == value
-        case "haircolour" => hairColour == value
-        case "facialhair" => false == value
-        case "hat" => hat == value
-        case "eyecolour" => eyeColour == value
-        case "hair" => true == value
-        case "gender" => "female" == value
-        case _ => true
-      }
-      case _ => false
-    }
-  }
-
-  // Play round function returns the filtered characters from pattern matching
-  def playRound(characters: Map[Int, Character], feature: String, value: Any): Map[Int, Character] = {
-    val remainingCharacters = matchCharacteristics(characters: Map
-      [Int, Character], feature, value)
-    remainingCharacters
-  }
-
   // exit boolean, when true the game ends
 
   // Remaining Characters on the virtual game board
@@ -240,7 +193,7 @@ object GamePlay extends App {
       }
 
       // This creates a filtered list of characters based on a feature - returns all people with hats
-      val updatedCharacters: Map[Int, Character] = playRound(individualsMap: Map[Int, Character], response, value)
+      val updatedCharacters: Map[Int, Character] = UtilityFunctions.playRound(individualsMap: Map[Int, Character], response, value)
 
       // This will eventually check character to Guess!!!!
       if (include) {
