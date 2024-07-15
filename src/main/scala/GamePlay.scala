@@ -57,15 +57,13 @@ object GamePlay extends App {
 
   def gameLoop(exit: Boolean = false): Unit = {
 
-
     while(!exit) {
 
       // Creates a Set out of the remaining Q's, Removes duplicates for us to print
       val remainingQuestions: Set[String] = remainingFeatures.toSet
 
       // Tells you what questions are still to be asked
-      println("You have the remaining characteristics to choose from:")
-      remainingQuestions.foreach(feature => println(feature))
+      UtilityFunctions.gameQuestions(remainingQuestions)
 
       // reads user response for main category
       var response: String = scala.io.StdIn.readLine().toLowerCase() // to lower case

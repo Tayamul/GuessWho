@@ -1,7 +1,7 @@
 object UtilityFunctions {
 
   // Finding a random character for you to guess
-  def randomChars (individualsMap: Map[Int, Character]): Character = {
+  def randomChars(individualsMap: Map[Int, Character]): Character = {
     val randomCharacter = new scala.util.Random
     val characterToGuess = individualsMap(randomCharacter.nextInt(24) + 1)
     characterToGuess
@@ -52,6 +52,15 @@ object UtilityFunctions {
     val remainingCharacters = matchCharacteristics(characters: Map
       [Int, Character], feature, value)
     remainingCharacters
+  }
+
+  // Tells you what questions are still to be asked
+  def gameQuestions(remainingQuestions: Set[String]): Unit = {
+    println("Ask another question.")
+    println("You can pick from the following categories:")
+    remainingQuestions.foreach(feature => {
+      println(feature)
+    })
   }
 
 }
