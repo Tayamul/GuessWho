@@ -38,6 +38,7 @@ object GamePlay extends App {
   // Finding a random character for you to guess
   val randomCharacter = new scala.util.Random
   val characterToGuess = individualsMap(randomCharacter.nextInt(24) + 1)
+  println(characterToGuess)
 
   // pattern matching characteristics you choose against the characters in the map
   def matchCharacteristics(individualsMap: Map[Int, Character], feature: String, value: Any): Map[Int, Character] = {
@@ -126,7 +127,7 @@ object GamePlay extends App {
       val BOLD = "\u001B[1m"
 
 
-      def printAllChars(): Unit = {
+      def printAllRemainingChars(): Unit = {
         println("Remaining Characters on the board:")
         remainingCharacters.foreach {
           case (_, value) => {
@@ -152,7 +153,7 @@ object GamePlay extends App {
 
       // In Game Options
       if (response == "b") {
-        printAllChars()
+        printAllRemainingChars()
         gameLoop()
       } else if (response == "h") {
         helpMe()
@@ -162,7 +163,29 @@ object GamePlay extends App {
       } else if (response == "r") {
         println("Rules")
       } else if (response == "g") {
-        println("Guess")
+        printAllRemainingChars()
+        println("Which character to you think is the undercover agent?")
+        println("Be careful, get it wrong and the game ends!")
+        val guess: String = scala.io.StdIn.readLine().toLowerCase()
+        if(characterToGuess.name.toLowerCase() == guess) {
+
+          def gameWin (): Unit = {
+            println("Congratulations")
+            Thread sleep 2000
+            gameLoop(exit = true)
+          }
+
+          gameWin()
+        } else {
+
+          def gameLose (): Unit = {
+            println("Boooo you suck!!")
+            Thread sleep 2000
+            gameLoop(exit = true)
+          }
+
+          gameLose()
+        }
       }
 
 
