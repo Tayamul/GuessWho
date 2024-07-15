@@ -117,6 +117,10 @@ object GamePlay extends App {
     val RESET = "\u001B[0m"
     val BG_WHITE = "\u001B[47m"
     val BLACK = "\u001B[30m"
+    val BG_BRIGHT_GREEN = "\u001B[102m"
+    val BG_BRIGHT_YELLOW = "\u001B[103m"
+    val BOLD = "\u001B[1m"
+
 
     def printAllChars (): Unit = {
       println("Remaining Characters on the board:")
@@ -133,16 +137,26 @@ object GamePlay extends App {
 
           println(f"$name%-35s $glasses%-35s $hat%-30s $hair%-30s $hairColour%-35s $facialHair%-35s $eyeColour%-35s $gender%-35s")
 
+        }
       }
     }
 
+    def helpMe (): Unit = {
+        println(s"${BG_BRIGHT_GREEN}${BLACK}${BOLD} Welcome to the Help Menu: \n Enter B -> To see the remaining characters on the board and their attributes \n Enter G -> To make a guess at who the character is \n Enter Exit -> To leave the game :( \n Enter R -> To see the rules and how to win  \n Enter H -> At any time for help ... As you know...  ${RESET}")
+      }
 
 
-
+    // In Game Options
     if(response == "b") {
       printAllChars()
+      gameLoop()
     } else if (response == "h") {
-      println("help")
+      helpMe()
+      gameLoop()
+    } else if (response == "Exit") {
+      exit = true
+    } else {
+      ???
     }
 
     // Checks if the response is still valid i.e. if you haven't asked already
