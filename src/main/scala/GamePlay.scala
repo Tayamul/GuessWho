@@ -38,29 +38,33 @@ object GamePlay extends App {
       case (_, BaldMan(name, glasses, facialHair, hat, eyeColour)) => feature match {
         case "name" => name == value
         case "glasses" => glasses == value
-        case "facialHair" => facialHair == value
+        case "facialhair" => facialHair == value
         case "hat" => hat == value
-        case "eyeColour" => eyeColour == value
+        case "eyecolour" => eyeColour == value
         case "hair" => false == value
+        case "haircolour" => true == value
+        case "gender" => "male" == value
         case _ => true
       }
       case (_, HairMan(name, glasses, facialHair, hairColour, hat, eyeColour)) => feature match {
         case "name" => name == value
         case "glasses" => glasses == value
-        case "facialHair" => facialHair == value
-        case "hairColour" => hairColour == value
+        case "facialhair" => facialHair == value
+        case "haircolour" => hairColour == value
         case "hat" => hat == value
-        case "eyeColour" => eyeColour == value
+        case "eyecolour" => eyeColour == value
         case "hair" => true == value
+        case "gender" => "male" == value
         case _ => true
       }
       case (_, Female(name, glasses, hairColour, hat, eyeColour)) => feature match {
         case "name" => name == value
         case "glasses" => glasses == value
-        case "hairColour" => hairColour == value
+        case "haircolour" => hairColour == value
         case "hat" => hat == value
-        case "eyeColour" => eyeColour == value
+        case "eyecolour" => eyeColour == value
         case "hair" => true == value
+        case "gender" => "female" == value
         case _ => true
       }
       case _ => false
@@ -78,9 +82,11 @@ object GamePlay extends App {
   var remainingCharacters : Map [Int, Character] = individualsMap
 
   // Accepted Strings as a feature in a set
-  val acceptedStrings: Seq[String] = Seq("hair", "glasses", "facialHair", "eyeColour", "hairColour", "hat", "gender")
-  var remainingFeatures: Seq[String] = Seq("hair", "glasses", "facialHair", "eyeColour", "eyeColour", "eyeColour", "hairColour", "hat", "gender", "hairColour", "hairColour", "hairColour", "eyeColour")
+  val acceptedStrings: Seq[String] = Seq("hair", "glasses", "facialhair", "eyecolour", "haircolour", "hat", "gender")
+  var remainingFeatures: Seq[String] = Seq("hair", "glasses", "facialhair", "eyecolour", "eyecolour", "eyecolour", "haircolour", "hat", "gender", "haircolour", "haircolour", "haircolour", "eyecolour")
 
+  var remainingHairColours: Seq[String] = Seq("red", "brown", "blonde", "black", "grey")
+  var remainingEyeColours: Seq[String] = Seq("blue", "brown", "green")
 
   def gameLoop( ): Unit = {
   do {
@@ -93,15 +99,51 @@ object GamePlay extends App {
 
 
     var response : String = scala.io.StdIn.readLine().toLowerCase() // to lower case
+    println(response)
+
+    var value: Any = ""
+
+    response match {
+      case "haircolour" => {
+        println("Which colour hair:")
+        remainingHairColours.foreach {
+          case (element) => print(f"$element ")
+        }
+        value = scala.io.StdIn.readLine().toLowerCase()
+      }
+      case "eyecolour" => {
+        println("Which colour eye:")
+        remainingEyeColours.foreach {
+          case (element) => print(f"$element" + "\n")
+        }
+        value = scala.io.StdIn.readLine().toLowerCase()
+      }
+      case "gender" => {
+        println("Male or Female?")
+        value = scala.io.StdIn.readLine().toLowerCase()
+      }
+      case "glasses" => {
+        value = true
+      }
+      case "facialhair" => {
+        value = true
+      }
+      case "hat" => {
+        value = true
+      }
+      case "hair" => {
+        value = true
+      }
+    }
 
     if (acceptedStrings.contains(response)) {
 
     // This creates a filtered list of characters based on a feature - returns all people with hats
 
-      var updatedCharacters = playRound(individualsMap: Map [Int, Character], response, true)
+      var updatedCharacters = playRound(individualsMap: Map [Int, Character], response, value)
       println(updatedCharacters)
       remainingCharacters = remainingCharacters.filter {
-        case (key, _) => !updatedCharacters.contains(key)
+        case (key, _) => updatedCharacters.contains(key)
       }
 
     } else {
