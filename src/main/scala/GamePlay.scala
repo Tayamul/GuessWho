@@ -2,7 +2,10 @@ import scala.collection.mutable
 
 
 
+
 object GamePlay extends App {
+
+
 
   // Map of the individual Characters
   val individualsMap: Map[Int, Character] = Map(
@@ -35,8 +38,6 @@ object GamePlay extends App {
   // Finding a random character for you to guess
   val randomCharacter = new scala.util.Random
   val characterToGuess = individualsMap(randomCharacter.nextInt(24) + 1)
-  println(characterToGuess.glasses)
-  println(characterToGuess)
 
   // pattern matching characteristics you choose against the characters in the map
   def matchCharacteristics(individualsMap: Map[Int, Character], feature: String, value: Any): Map[Int, Character] = {
@@ -104,7 +105,6 @@ object GamePlay extends App {
 
   def gameLoop(exit: Boolean = false): Unit = {
 
-    if(exit) { println("This shouldn't run")}
 
     while(!exit) {
 
@@ -146,7 +146,7 @@ object GamePlay extends App {
       }
 
       def helpMe(): Unit = {
-        println(s"${BG_BRIGHT_GREEN}${BLACK}${BOLD} Welcome to the Help Menu: \n Enter B -> To see the remaining characters on the board and their attributes \n Enter G -> To make a guess at who the character is \n Enter Exit -> To leave the game :( \n Enter R -> To see the rules and how to win  \n Enter H -> At any time for help ... As you know...  ${RESET}")
+        println(s"${BG_BRIGHT_GREEN}${BLACK}${BOLD} Welcome to the Help Menu: \n Enter B -> To see the remaining characters on the board and their attributes \n Enter G -> To make a guess at who the character is \n Enter E -> To leave the game :( \n Enter R -> To see the rules and how to win  \n Enter H -> At any time for help ... As you know...  ${RESET}")
       }
 
 
@@ -158,8 +158,11 @@ object GamePlay extends App {
         helpMe()
         gameLoop()
       } else if (response == "e") {
-        println("Here")
         gameLoop(exit = true)
+      } else if (response == "r") {
+        println("Rules")
+      } else if (response == "g") {
+        println("Guess")
       }
 
 
@@ -258,29 +261,55 @@ object GamePlay extends App {
       }
 
 
-
-
-
-      // Does our mystery character have a hat
-
-      // if yes leave all people in list
-
-      // if no update our list:
-
       val numOfChar: Int = remainingCharacters.size
       println(s"${numOfChar} out of 24 characters left on the board.")
 
-//      // This ends the game when we only have one character left
-//      if (remainingCharacters.size == 1) {
-//        exit = true
-//      }
 
     }
+
     println("Game Ended")
     Thread.sleep(4000)
     // clear the console - GREP CONSOLE IF WANTED TO IN FUTURE
     startGame()
   }
+
+  val BG_BRIGHT_WHITE = "\u001B[107m"
+  val BLACK = "\u001B[30m"
+  val RED = "\u001B[31m"
+  val GREEN = "\u001B[32m"
+  val YELLOW = "\u001B[33m"
+  val BLUE = "\u001B[34m"
+  val PURPLE = "\u001B[35m"
+  val CYAN = "\u001B[36m"
+  val WHITE = "\u001B[37m"
+  val BOLD = "\u001B[1m"
+  val UNDERLINE = "\u001B[4m"
+  val RESET = "\u001B[0m"
+  val BG_BRIGHT_GREEN = "\u001B[102m"
+  val BG_BRIGHT_YELLOW = "\u001B[103m"
+
+  def intro (): Unit = {
+    println(s"${BG_BRIGHT_YELLOW}${BLACK}${BOLD}${UNDERLINE}!! * Ultimate Guess Who Experience * !!${RESET}")
+    println()
+    println(s"${BG_BRIGHT_GREEN}${BLACK}${BOLD}The rules are simple ....  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla placerat magna eget leo condimentum, sit amet porttitor ex congue. Proin dolor lorem, scelerisque in quam ut, finibus efficitur ligula. Donec pharetra tempor neque mattis tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean dictum convallis iaculis. Duis rhoncus imperdiet velit. Phasellus ultricies nisl sit amet ipsum tempor dapibus.${RESET}")
+    println()
+
+  }
+
+
+  def initialHelpRules (): Unit = {
+    println(s"${BG_BRIGHT_GREEN}${BLACK}${BOLD}Whenever you are prompted for an answer you can also access the following commands:" +
+      s"\n Enter B -> To see the remaining characters on the board and their attributes \n Enter G -> To make a guess at who the character is \n Enter E -> To leave the game :( \n Enter R -> To see the rules and how to win  \n Enter H -> At any time to see these options again ${RESET}")
+    println()
+  }
+
+
+
+  def goodLuck (): Unit = {
+    println(s"${BG_BRIGHT_WHITE}${BOLD}${UNDERLINE}${BLUE}G${RED}O${GREEN}O${YELLOW}D ${BLUE}L${PURPLE}U${CYAN}C${WHITE}K${RESET}")
+    println()
+  }
+
 
 
 
@@ -288,6 +317,9 @@ object GamePlay extends App {
     println("Type Start to Start")
     val response: String = scala.io.StdIn.readLine().toLowerCase()
     if (response == "start") {
+      intro()
+      initialHelpRules()
+      goodLuck()
       gameLoop()
     }
   }
