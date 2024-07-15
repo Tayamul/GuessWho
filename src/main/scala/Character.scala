@@ -6,4 +6,5 @@ abstract class Character {
   val hat: Boolean
   val eyeColour: String
   val gender: String
+  val facialHair: Boolean
 }

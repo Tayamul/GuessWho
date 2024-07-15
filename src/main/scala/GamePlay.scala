@@ -32,7 +32,9 @@ object GamePlay extends App {
 
   // Finding a random character for you to guess
   val randomCharacter = new scala.util.Random
-  val characterToGuess = individualsMap(randomCharacter.nextInt(25))
+  val characterToGuess = individualsMap(randomCharacter.nextInt(24) + 1)
+  println(characterToGuess.glasses)
+  println(characterToGuess)
 
   // pattern matching characteristics you choose against the characters in the map
   def matchCharacteristics(individualsMap: Map[Int, Character], feature: String, value: Any): Map[Int, Character] = {
@@ -63,6 +65,7 @@ object GamePlay extends App {
         case "name" => name == value
         case "glasses" => glasses == value
         case "haircolour" => hairColour == value
+        case "facialhair" => false == value
         case "hat" => hat == value
         case "eyecolour" => eyeColour == value
         case "hair" => true == value
@@ -124,6 +127,7 @@ object GamePlay extends App {
     }
     // initialised for subcategory i.e. colour
     var value: Any = ""
+    var include: Boolean = true
 
     // based on the primary response allows you to pick the sub category
     response match {
@@ -134,6 +138,7 @@ object GamePlay extends App {
           case (element) => print(f"$element ")
         }
         value = scala.io.StdIn.readLine().toLowerCase()
+        if (characterToGuess.hairColour == value) include = true else include = false
       }
       case "eyecolour" => {
         println("Which colour eye:")
@@ -141,43 +146,57 @@ object GamePlay extends App {
           case (element) => print(f"$element" + "\n")
         }
         value = scala.io.StdIn.readLine().toLowerCase()
+        if (characterToGuess.eyeColour == value) include = true else include = false
       }
       case "gender" => {
         println("Male or Female?")
         value = scala.io.StdIn.readLine().toLowerCase()
+        if (characterToGuess.gender == value) include = true else include = false
       }
       case "glasses" => {
-        value = true
+        value = characterToGuess.glasses
       }
       case "facialhair" => {
-        value = true
+        value = characterToGuess.facialHair
       }
       case "hat" => {
-        value = true
+        value = characterToGuess.hat
       }
       case "hair" => {
-        value = true
+        value = characterToGuess.hasHair
       }
     }
 
-    // This will eventually check character to Guess!!!!
-    if (acceptedStrings.contains(response)) {
-
     // This creates a filtered list of characters based on a feature - returns all people with hats
-      val updatedCharacters: Map[Int, Character] = playRound(individualsMap: Map [Int, Character], response, value)
+    val updatedCharacters: Map[Int, Character] = playRound(individualsMap: Map [Int, Character], response, value)
 
+    // This will eventually check character to Guess!!!!
+    if (include) {
+      if (response == "hair" && !characterToGuess.hasHair) {
+        remainingFeatures = remainingFeatures.filterNot( _ == "haircolour")
+      }
       // This filters the remaining characters in the game board to get rid of those that match the criteria
       remainingCharacters = remainingCharacters.filter {
         case (key, _) => updatedCharacters.contains(key)
       }
+    }  else if (!include) {
+      // This filters the remaining characters in the game board to get rid of those that match the criteria
+      remainingCharacters = remainingCharacters.filter {
+        case (key, _) => !updatedCharacters.contains(key)
+    }
+    }  else {
+      // this is error handling
+      println("error message here")
+      gameLoop()
+    }
 
-        if(remainingFeatures.contains(response)) {
+    if(remainingFeatures.contains(response)) {
           // Once used, the feature is then found in the Seq and removed so it cannot be searched for again
           val index = remainingFeatures.indexOf(response)
           remainingFeatures = remainingFeatures.patch(index, Nil, 1)
         }
 
-        // if filtering by a string value
+      // if filtering by a string value
         if(response == "haircolour") {
           // filter out the used value
           remainingHairColours = remainingHairColours.filterNot( _ == value)
@@ -185,15 +204,11 @@ object GamePlay extends App {
           // filter out the used value
           remainingEyeColours = remainingEyeColours.filterNot( _ == value)
         } else {
-          println(404)
+
         }
 
 
-    } else {
-      // this is error handling
-      println("error message here")
-      gameLoop()
-    }
+
 
 
     // Does our mystery character have a hat
