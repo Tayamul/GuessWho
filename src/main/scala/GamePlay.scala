@@ -113,7 +113,37 @@ object GamePlay extends App {
 
     // reads user response for main category
     var response : String = scala.io.StdIn.readLine().toLowerCase() // to lower case
-    println(response)
+
+    val RESET = "\u001B[0m"
+    val BG_WHITE = "\u001B[47m"
+    val BLACK = "\u001B[30m"
+
+    def printAllChars (): Unit = {
+      println("Remaining Characters on the board:")
+      remainingCharacters.foreach {
+        case (_, value) => {
+          val name = s"${BG_WHITE}${BLACK} Name: ${RESET} ${value.name}"
+          val glasses = s"${BG_WHITE}${BLACK} Glasses: ${RESET} ${value.glasses}"
+          val hat = s"${BG_WHITE}${BLACK} Hat: ${RESET} ${value.hat}"
+          val hair = s"${BG_WHITE}${BLACK} Hair: ${RESET} ${value.hasHair}"
+          val hairColour = if (value.hasHair) s"${BG_WHITE}${BLACK} Hair Colour: ${RESET} ${value.hairColour}" else s"${BG_WHITE}${BLACK} Hair Colour: ${RESET} Bald"
+          val facialHair = s"${BG_WHITE}${BLACK} Facial Hair: ${RESET} ${value.facialHair}"
+          val eyeColour = s"${BG_WHITE}${BLACK} Eye Colour: ${RESET} ${value.eyeColour}"
+          val gender = s"${BG_WHITE}${BLACK} Male or Female: ${RESET} ${value.gender}"
+
+          println(f"$name%-35s $glasses%-35s $hat%-30s $hair%-30s $hairColour%-35s $facialHair%-35s $eyeColour%-35s $gender%-35s")
+
+      }
+    }
+
+
+
+
+    if(response == "b") {
+      printAllChars()
+    } else if (response == "h") {
+      println("help")
+    }
 
     // Checks if the response is still valid i.e. if you haven't asked already
     if(!remainingFeatures.contains(response) && acceptedStrings.contains(response)) {
@@ -172,6 +202,7 @@ object GamePlay extends App {
 
     // This will eventually check character to Guess!!!!
     if (include) {
+      println(s"The mystery character does have ${response} ${value}, good option!")
       if (response == "hair" && !characterToGuess.hasHair) {
         remainingFeatures = remainingFeatures.filterNot( _ == "haircolour")
       }
@@ -180,6 +211,7 @@ object GamePlay extends App {
         case (key, _) => updatedCharacters.contains(key)
       }
     }  else if (!include) {
+      println(s"Uh Oh... The mystery character does not have ${response} ${value}!")
       // This filters the remaining characters in the game board to get rid of those that match the criteria
       remainingCharacters = remainingCharacters.filter {
         case (key, _) => !updatedCharacters.contains(key)
@@ -217,7 +249,8 @@ object GamePlay extends App {
 
     // if no update our list:
 
-    remainingCharacters.foreach(println)
+      val numOfChar: Int = remainingCharacters.size
+      println(s"${numOfChar} out of 24 characters left on the board.")
 
         // This ends the game when we only have one character left
         if (remainingCharacters.size == 1) {
