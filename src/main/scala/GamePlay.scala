@@ -41,6 +41,7 @@ object GamePlay extends App {
         case "facialHair" => facialHair == value
         case "hat" => hat == value
         case "eyeColour" => eyeColour == value
+        case "hair" => false == value
         case _ => true
       }
       case (_, HairMan(name, glasses, facialHair, hairColour, hat, eyeColour)) => feature match {
@@ -50,6 +51,7 @@ object GamePlay extends App {
         case "hairColour" => hairColour == value
         case "hat" => hat == value
         case "eyeColour" => eyeColour == value
+        case "hair" => true == value
         case _ => true
       }
       case (_, Female(name, glasses, hairColour, hat, eyeColour)) => feature match {
@@ -58,6 +60,7 @@ object GamePlay extends App {
         case "hairColour" => hairColour == value
         case "hat" => hat == value
         case "eyeColour" => eyeColour == value
+        case "hair" => true == value
         case _ => true
       }
       case _ => false
@@ -70,38 +73,59 @@ object GamePlay extends App {
     remainingCharacters
   }
 
-  val updatedCharacters = playRound(individualsMap: Map[Int, Character], "name", "John")
-
   var exit: Boolean = false
 
   var remainingCharacters : Map [Int, Character] = individualsMap
 
+  // Accepted Strings as a feature in a set
+  val acceptedStrings: Seq[String] = Seq("hair", "glasses", "facialHair", "eyeColour", "hairColour", "hat", "gender")
+  var remainingFeatures: Seq[String] = Seq("hair", "glasses", "facialHair", "eyeColour", "eyeColour", "eyeColour", "hairColour", "hat", "gender", "hairColour", "hairColour", "hairColour", "eyeColour")
 
+
+  def gameLoop( ): Unit = {
   do {
 
-    var feature: String = scala.io.StdIn.readLine()
+    val remainingQuestions: Set[String] = remainingFeatures.toSet
 
 
+    println("You have the remaining characteristics to choose from:")
+    remainingQuestions.foreach( feature => println(feature))
+
+
+    var response : String = scala.io.StdIn.readLine().toLowerCase() // to lower case
+
+    if (acceptedStrings.contains(response)) {
 
     // This creates a filtered list of characters based on a feature - returns all people with hats
-    val updatedCharacters = playRound(individualsMap: Map [Int, Character], feature, true)
+
+      var updatedCharacters = playRound(individualsMap: Map [Int, Character], response, true)
+      println(updatedCharacters)
+      remainingCharacters = remainingCharacters.filter {
+        case (key, _) => !updatedCharacters.contains(key)
+      }
+
+    } else {
+      println("error message here")
+      gameLoop()
+    }
+
 
     // Does our mystery character have a hat
 
     // if yes leave all people in list
 
     // if no update our list:
-    remainingCharacters = remainingCharacters.filter {
-      case (key, _) => !updatedCharacters.contains(key)
-    }
 
     remainingCharacters.foreach(println)
 
         if (remainingCharacters.size == 1) {
           exit = true
         }
+
   } while (!exit)
 
   println("Game Ended")
+  }
 
+  gameLoop()
 }
