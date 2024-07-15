@@ -1,5 +1,7 @@
 import scala.collection.mutable
 
+
+
 object GamePlay extends App {
 
   // Map of the individual Characters
@@ -84,7 +86,6 @@ object GamePlay extends App {
   }
 
   // exit boolean, when true the game ends
-  var exit: Boolean = false
 
   // Remaining Characters on the virtual game board
   var remainingCharacters : Map [Int, Character] = individualsMap
@@ -101,181 +102,196 @@ object GamePlay extends App {
   // Remaining Eye Options
   var remainingEyeColours: Seq[String] = Seq("blue", "brown", "green")
 
-  def gameLoop( ): Unit = {
-  do {
+  def gameLoop(exit: Boolean = false): Unit = {
 
-    // Creates a Set out of the remaining Q's, Removes duplicates for us to print
-    val remainingQuestions: Set[String] = remainingFeatures.toSet
+    if(exit) { println("This shouldn't run")}
 
-    // Tells you what questions are still to be asked
-    println("You have the remaining characteristics to choose from:")
-    remainingQuestions.foreach( feature => println(feature))
+    while(!exit) {
 
-    // reads user response for main category
-    var response : String = scala.io.StdIn.readLine().toLowerCase() // to lower case
+      // Creates a Set out of the remaining Q's, Removes duplicates for us to print
+      val remainingQuestions: Set[String] = remainingFeatures.toSet
 
-    val RESET = "\u001B[0m"
-    val BG_WHITE = "\u001B[47m"
-    val BLACK = "\u001B[30m"
-    val BG_BRIGHT_GREEN = "\u001B[102m"
-    val BG_BRIGHT_YELLOW = "\u001B[103m"
-    val BOLD = "\u001B[1m"
+      // Tells you what questions are still to be asked
+      println("You have the remaining characteristics to choose from:")
+      remainingQuestions.foreach(feature => println(feature))
+
+      // reads user response for main category
+      var response: String = scala.io.StdIn.readLine().toLowerCase() // to lower case
+
+      val RESET = "\u001B[0m"
+      val BG_WHITE = "\u001B[47m"
+      val BLACK = "\u001B[30m"
+      val BG_BRIGHT_GREEN = "\u001B[102m"
+      val BG_BRIGHT_YELLOW = "\u001B[103m"
+      val BOLD = "\u001B[1m"
 
 
-    def printAllChars (): Unit = {
-      println("Remaining Characters on the board:")
-      remainingCharacters.foreach {
-        case (_, value) => {
-          val name = s"${BG_WHITE}${BLACK} Name: ${RESET} ${value.name}"
-          val glasses = s"${BG_WHITE}${BLACK} Glasses: ${RESET} ${value.glasses}"
-          val hat = s"${BG_WHITE}${BLACK} Hat: ${RESET} ${value.hat}"
-          val hair = s"${BG_WHITE}${BLACK} Hair: ${RESET} ${value.hasHair}"
-          val hairColour = if (value.hasHair) s"${BG_WHITE}${BLACK} Hair Colour: ${RESET} ${value.hairColour}" else s"${BG_WHITE}${BLACK} Hair Colour: ${RESET} Bald"
-          val facialHair = s"${BG_WHITE}${BLACK} Facial Hair: ${RESET} ${value.facialHair}"
-          val eyeColour = s"${BG_WHITE}${BLACK} Eye Colour: ${RESET} ${value.eyeColour}"
-          val gender = s"${BG_WHITE}${BLACK} Male or Female: ${RESET} ${value.gender}"
+      def printAllChars(): Unit = {
+        println("Remaining Characters on the board:")
+        remainingCharacters.foreach {
+          case (_, value) => {
+            val name = s"${BG_WHITE}${BLACK} Name: ${RESET} ${value.name}"
+            val glasses = s"${BG_WHITE}${BLACK} Glasses: ${RESET} ${value.glasses}"
+            val hat = s"${BG_WHITE}${BLACK} Hat: ${RESET} ${value.hat}"
+            val hair = s"${BG_WHITE}${BLACK} Hair: ${RESET} ${value.hasHair}"
+            val hairColour = if (value.hasHair) s"${BG_WHITE}${BLACK} Hair Colour: ${RESET} ${value.hairColour}" else s"${BG_WHITE}${BLACK} Hair Colour: ${RESET} Bald"
+            val facialHair = s"${BG_WHITE}${BLACK} Facial Hair: ${RESET} ${value.facialHair}"
+            val eyeColour = s"${BG_WHITE}${BLACK} Eye Colour: ${RESET} ${value.eyeColour}"
+            val gender = s"${BG_WHITE}${BLACK} Male or Female: ${RESET} ${value.gender}"
 
-          println(f"$name%-35s $glasses%-35s $hat%-30s $hair%-30s $hairColour%-35s $facialHair%-35s $eyeColour%-35s $gender%-35s")
+            println(f"$name%-35s $glasses%-35s $hat%-30s $hair%-30s $hairColour%-35s $facialHair%-35s $eyeColour%-35s $gender%-35s")
 
+          }
         }
       }
-    }
 
-    def helpMe (): Unit = {
+      def helpMe(): Unit = {
         println(s"${BG_BRIGHT_GREEN}${BLACK}${BOLD} Welcome to the Help Menu: \n Enter B -> To see the remaining characters on the board and their attributes \n Enter G -> To make a guess at who the character is \n Enter Exit -> To leave the game :( \n Enter R -> To see the rules and how to win  \n Enter H -> At any time for help ... As you know...  ${RESET}")
       }
 
 
-    // In Game Options
-    if(response == "b") {
-      printAllChars()
-      gameLoop()
-    } else if (response == "h") {
-      helpMe()
-      gameLoop()
-    } else if (response == "Exit") {
-      exit = true
-    } else {
-      ???
-    }
+      // In Game Options
+      if (response == "b") {
+        printAllChars()
+        gameLoop()
+      } else if (response == "h") {
+        helpMe()
+        gameLoop()
+      } else if (response == "e") {
+        println("Here")
+        gameLoop(exit = true)
+      }
 
-    // Checks if the response is still valid i.e. if you haven't asked already
-    if(!remainingFeatures.contains(response) && acceptedStrings.contains(response)) {
-      println("you have already asked this question, try again")
-      gameLoop()
-    }
-    // if the user puts in an invalid string/input restart the turn
-    else if (!acceptedStrings.contains(response)) {
-      println("That selection is not available please try again")
-      gameLoop()
-    }
-    // initialised for subcategory i.e. colour
-    var value: Any = ""
-    var include: Boolean = true
 
-    // based on the primary response allows you to pick the sub category
-    response match {
-      // When Your primary selection is haircolour
-      case "haircolour" => {
-        println("Which colour hair:")
-        remainingHairColours.foreach {
-          case (element) => print(f"$element ")
+      // Checks if the response is still valid i.e. if you haven't asked already
+      if (!remainingFeatures.contains(response) && acceptedStrings.contains(response)) {
+        println("you have already asked this question, try again")
+        gameLoop()
+      }
+      // if the user puts in an invalid string/input restart the turn
+      else if (!acceptedStrings.contains(response)) {
+        println("That selection is not available please try again")
+        gameLoop()
+      }
+      // initialised for subcategory i.e. colour
+      var value: Any = ""
+      var include: Boolean = true
+
+      // based on the primary response allows you to pick the sub category
+      response match {
+        // When Your primary selection is haircolour
+        case "haircolour" => {
+          println("Which colour hair:")
+          remainingHairColours.foreach {
+            case (element) => print(f"$element ")
+          }
+          value = scala.io.StdIn.readLine().toLowerCase()
+          if (characterToGuess.hairColour == value) include = true else include = false
         }
-        value = scala.io.StdIn.readLine().toLowerCase()
-        if (characterToGuess.hairColour == value) include = true else include = false
-      }
-      case "eyecolour" => {
-        println("Which colour eye:")
-        remainingEyeColours.foreach {
-          case (element) => print(f"$element" + "\n")
+        case "eyecolour" => {
+          println("Which colour eye:")
+          remainingEyeColours.foreach {
+            case (element) => print(f"$element" + "\n")
+          }
+          value = scala.io.StdIn.readLine().toLowerCase()
+          if (characterToGuess.eyeColour == value) include = true else include = false
         }
-        value = scala.io.StdIn.readLine().toLowerCase()
-        if (characterToGuess.eyeColour == value) include = true else include = false
-      }
-      case "gender" => {
-        println("Male or Female?")
-        value = scala.io.StdIn.readLine().toLowerCase()
-        if (characterToGuess.gender == value) include = true else include = false
-      }
-      case "glasses" => {
-        value = characterToGuess.glasses
-      }
-      case "facialhair" => {
-        value = characterToGuess.facialHair
-      }
-      case "hat" => {
-        value = characterToGuess.hat
-      }
-      case "hair" => {
-        value = characterToGuess.hasHair
-      }
-    }
-
-    // This creates a filtered list of characters based on a feature - returns all people with hats
-    val updatedCharacters: Map[Int, Character] = playRound(individualsMap: Map [Int, Character], response, value)
-
-    // This will eventually check character to Guess!!!!
-    if (include) {
-      println(s"The mystery character does have ${response} ${value}, good option!")
-      if (response == "hair" && !characterToGuess.hasHair) {
-        remainingFeatures = remainingFeatures.filterNot( _ == "haircolour")
-      }
-      // This filters the remaining characters in the game board to get rid of those that match the criteria
-      remainingCharacters = remainingCharacters.filter {
-        case (key, _) => updatedCharacters.contains(key)
-      }
-    }  else if (!include) {
-      println(s"Uh Oh... The mystery character does not have ${response} ${value}!")
-      // This filters the remaining characters in the game board to get rid of those that match the criteria
-      remainingCharacters = remainingCharacters.filter {
-        case (key, _) => !updatedCharacters.contains(key)
-    }
-    }  else {
-      // this is error handling
-      println("error message here")
-      gameLoop()
-    }
-
-    if(remainingFeatures.contains(response)) {
-          // Once used, the feature is then found in the Seq and removed so it cannot be searched for again
-          val index = remainingFeatures.indexOf(response)
-          remainingFeatures = remainingFeatures.patch(index, Nil, 1)
+        case "gender" => {
+          println("Male or Female?")
+          value = scala.io.StdIn.readLine().toLowerCase()
+          if (characterToGuess.gender == value) include = true else include = false
         }
+        case "glasses" => {
+          value = characterToGuess.glasses
+        }
+        case "facialhair" => {
+          value = characterToGuess.facialHair
+        }
+        case "hat" => {
+          value = characterToGuess.hat
+        }
+        case "hair" => {
+          value = characterToGuess.hasHair
+        }
+      }
+
+      // This creates a filtered list of characters based on a feature - returns all people with hats
+      val updatedCharacters: Map[Int, Character] = playRound(individualsMap: Map[Int, Character], response, value)
+
+      // This will eventually check character to Guess!!!!
+      if (include) {
+        println(s"The mystery character does have ${response} ${value}, good option!")
+        if (response == "hair" && !characterToGuess.hasHair) {
+          remainingFeatures = remainingFeatures.filterNot(_ == "haircolour")
+        }
+        // This filters the remaining characters in the game board to get rid of those that match the criteria
+        remainingCharacters = remainingCharacters.filter {
+          case (key, _) => updatedCharacters.contains(key)
+        }
+      } else if (!include) {
+        println(s"Uh Oh... The mystery character does not have ${response} ${value}!")
+        // This filters the remaining characters in the game board to get rid of those that match the criteria
+        remainingCharacters = remainingCharacters.filter {
+          case (key, _) => !updatedCharacters.contains(key)
+        }
+      } else {
+        // this is error handling
+        println("error message here")
+        gameLoop()
+      }
+
+      if (remainingFeatures.contains(response)) {
+        // Once used, the feature is then found in the Seq and removed so it cannot be searched for again
+        val index = remainingFeatures.indexOf(response)
+        remainingFeatures = remainingFeatures.patch(index, Nil, 1)
+      }
 
       // if filtering by a string value
-        if(response == "haircolour") {
-          // filter out the used value
-          remainingHairColours = remainingHairColours.filterNot( _ == value)
-        } else if (response == "eyecolour") {
-          // filter out the used value
-          remainingEyeColours = remainingEyeColours.filterNot( _ == value)
-        } else {
+      if (response == "haircolour") {
+        // filter out the used value
+        remainingHairColours = remainingHairColours.filterNot(_ == value)
+      } else if (response == "eyecolour") {
+        // filter out the used value
+        remainingEyeColours = remainingEyeColours.filterNot(_ == value)
+      } else {
 
-        }
-
-
+      }
 
 
 
-    // Does our mystery character have a hat
 
-    // if yes leave all people in list
 
-    // if no update our list:
+      // Does our mystery character have a hat
+
+      // if yes leave all people in list
+
+      // if no update our list:
 
       val numOfChar: Int = remainingCharacters.size
       println(s"${numOfChar} out of 24 characters left on the board.")
 
-        // This ends the game when we only have one character left
-        if (remainingCharacters.size == 1) {
-          exit = true
-        }
+//      // This ends the game when we only have one character left
+//      if (remainingCharacters.size == 1) {
+//        exit = true
+//      }
 
-  } while (!exit)
-
-
-  println("Game Ended")
+    }
+    println("Game Ended")
+    Thread.sleep(4000)
+    // clear the console - GREP CONSOLE IF WANTED TO IN FUTURE
+    startGame()
   }
 
-  gameLoop()
+
+
+  def startGame(): Unit = {
+    println("Type Start to Start")
+    val response: String = scala.io.StdIn.readLine().toLowerCase()
+    if (response == "start") {
+      gameLoop()
+    }
+  }
+
+  startGame()
+
 }
