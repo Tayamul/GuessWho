@@ -1,4 +1,4 @@
 abstract class Male extends Character {
-  val gender: String = "Male"
+  val gender: String = "male"
   val facialHair: Boolean
 }
