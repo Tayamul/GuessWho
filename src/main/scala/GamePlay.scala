@@ -2,7 +2,7 @@ import scala.collection.mutable
 
 object GamePlay extends App {
 
-  val individualsMap: Map[Int, Any] = Map(
+  val individualsMap: Map[Int, Character] = Map(
     1 -> Individuals.p1,
     2 -> Individuals.p2,
     3 -> Individuals.p3,
@@ -33,7 +33,7 @@ object GamePlay extends App {
   val characterToGuess = individualsMap(randomCharacter.nextInt(25))
 
   // pattern matching
-  def matchCharacteristics(individualsMap: Map[Int, Any], feature: String, value: Any): Map[Int, Any] = {
+  def matchCharacteristics(individualsMap: Map[Int, Character], feature: String, value: Any): Map[Int, Character] = {
     individualsMap.filter {
       case (_, BaldMan(name, glasses, facialHair, hat, eyeColour)) => feature match {
         case "name" => name == value
@@ -64,12 +64,44 @@ object GamePlay extends App {
     }
   }
 
-  def playRound(characters: Map[Int, Any], feature: String, value: Any): Map[Int, Any] = {
+  def playRound(characters: Map[Int, Character], feature: String, value: Any): Map[Int, Character] = {
     val remainingCharacters = matchCharacteristics(characters: Map
-      [Int, Any], feature, value)
+      [Int, Character], feature, value)
     remainingCharacters
   }
 
-  val updatedCharacters = playRound(individualsMap: Map[Int, Any], "name", "John")
+  val updatedCharacters = playRound(individualsMap: Map[Int, Character], "name", "John")
+
+  var exit: Boolean = false
+
+  var remainingCharacters : Map [Int, Character] = individualsMap
+
+
+  do {
+
+    var feature: String = scala.io.StdIn.readLine()
+
+
+
+    // This creates a filtered list of characters based on a feature - returns all people with hats
+    val updatedCharacters = playRound(individualsMap: Map [Int, Character], feature, true)
+
+    // Does our mystery character have a hat
+
+    // if yes leave all people in list
+
+    // if no update our list:
+    remainingCharacters = remainingCharacters.filter {
+      case (key, _) => !updatedCharacters.contains(key)
+    }
+
+    remainingCharacters.foreach(println)
+
+        if (remainingCharacters.size == 1) {
+          exit = true
+        }
+  } while (!exit)
+
+  println("Game Ended")
 
 }
