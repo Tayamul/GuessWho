@@ -70,14 +70,6 @@ object GamePlay extends App {
     remainingCharacters
   }
 
-  val characters: List[Character] = List(
-    BaldMan("John", glasses = false, facialHair = true, hat = false, eyeColour = "Blue"),
-    Female("Alice", glasses = false, "Red", hat = true, eyeColour = "Green"),
-    HairMan("Blake", glasses = false, facialHair = true, hairColour = "Red", hat = false, eyeColour = "Blue"),
-    Female("Olivia", glasses = true, "Blonde", hat = true, eyeColour = "Blue")
-  )
+  val updatedCharacters = playRound(individualsMap: Map[Int, Any], "name", "John")
 
-
-  val updatedCharacters = playRound(individualsMap: Map[Int, Any], "glasses", true)
-  println(updatedCharacters)
 }
