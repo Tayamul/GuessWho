@@ -116,7 +116,7 @@ object UtilityFunctions {
 
     println(s"${BG_BRIGHT_YELLOW}${BLACK}${BOLD}${UNDERLINE}!! * Ultimate Guess Who Experience * !!${RESET}")
     println()
-    println(s"${BG_BRIGHT_GREEN}${BLACK}${BOLD}The rules are simple ....  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla placerat magna eget leo condimentum, sit amet porttitor ex congue. Proin dolor lorem, scelerisque in quam ut, finibus efficitur ligula. Donec pharetra tempor neque mattis tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean dictum convallis iaculis. Duis rhoncus imperdiet velit. Phasellus ultricies nisl sit amet ipsum tempor dapibus.${RESET}")
+    println(s"${BG_BRIGHT_GREEN}${BLACK}${BOLD}The rules are simple, in this one player game the computer selects a secret undercover agent you have to find. \n You will be given a list of helpful questions to ask. You can select your question using the question numbering. \n \n Example: \n 1. This is a question? \n Input: \n 1 \n \n when a question has multiple options shown by _(option) _ a follow up question will be asked if you choose this route. \n At anytime you can enter G to take a guess at who the spy is. \n But don't get it wrong or the game ends. \n You will be prompted to guess as you narrow down the search. \n Or, keep questioning until your down to the single man or woman! \n${RESET}")
     println()
   }
 
