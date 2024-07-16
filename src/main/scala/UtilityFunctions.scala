@@ -3,9 +3,9 @@ import GamePlay.{characterToGuess, remainingCharacters}
 object UtilityFunctions {
 
   // Finding a random character for you to guess
-  def randomChars(individualsMap: Map[Int, Character]): Character = {
+  def randomChars(individualsMap: Map[Int, Character], numberOfCharacters: Int = 24): Character = {
     val randomCharacter = new scala.util.Random
-    val characterToGuess = individualsMap(randomCharacter.nextInt(24) + 1)
+    val characterToGuess = individualsMap(randomCharacter.nextInt(numberOfCharacters) + 1)
     characterToGuess
   }
 
@@ -217,7 +217,7 @@ object UtilityFunctions {
     value
   }
 
-  def genderMatch (response: String): String = {
+  def genderMatch (): String = {
 
       println("\nSelect the gender:")
       println("1. male")
@@ -233,7 +233,7 @@ object UtilityFunctions {
         value = "female"
       } else {
         println("That is not an accepted input sorry ")
-        genderMatch(response)
+        genderMatch()
       }
       println()
       value

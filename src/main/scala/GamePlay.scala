@@ -164,7 +164,7 @@ object GamePlay extends App {
         }
         case "gender" => {
 
-          value = genderMatch(response)
+          value = genderMatch()
 
           if (characterToGuess.gender == value) include = true else include = false
 
