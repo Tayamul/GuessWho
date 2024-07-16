@@ -149,25 +149,16 @@ object GamePlay extends App {
       response match {
         // When Your primary selection is haircolour
         case "haircolour" => {
-
           value = hairColourMatch(response, remainingHairColours)
           if (characterToGuess.hairColour == value) include = true else include = false
-
-
         }
         case "eyecolour" => {
-
           value = eyeColourMatch(response: String, remainingEyeColours: Seq[String])
-
           if (characterToGuess.eyeColour == value) include = true else include = false
-
         }
         case "gender" => {
-
           value = genderMatch()
-
           if (characterToGuess.gender == value) include = true else include = false
-
         }
         case "glasses" => {
           value = characterToGuess.glasses
