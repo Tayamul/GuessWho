@@ -133,7 +133,6 @@ object UtilityFunctions {
     println()
   }
 
-
   def goodLuck (): Unit = {
 
     val BG_BRIGHT_WHITE = "\u001B[107m"
@@ -151,7 +150,6 @@ object UtilityFunctions {
     println(s"${BG_BRIGHT_WHITE}${BOLD}${UNDERLINE}${BLUE}G${RED}O${GREEN}O${YELLOW}D ${BLUE}L${PURPLE}U${CYAN}C${WHITE}K${RESET}")
     println()
   }
-
 
   def hairColourMatch(response: String, remainingHairColours: Seq[String]): String = {
     println("\nSelect the hair colour:")
@@ -183,7 +181,6 @@ object UtilityFunctions {
     value
   }
 
-
   def eyeColourMatch(response: String, remainingEyeColours: Seq[String]): String = {
 
     println("\nWhich colour eye:")
@@ -191,7 +188,6 @@ object UtilityFunctions {
       case (element) => print(f"$element" + "\n")
 
     }
-
 
     println()
     var value = scala.io.StdIn.readLine().toLowerCase()

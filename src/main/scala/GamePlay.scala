@@ -1,13 +1,7 @@
 import UtilityFunctions.{eyeColourMatch, formatValForRemove, genderMatch, hairColourMatch}
-
 import scala.collection.mutable
 
-
-
-
 object GamePlay extends App {
-
-
 
   // Map of the individual Characters
   val individualsMap: Map[Int, Character] = Map(
