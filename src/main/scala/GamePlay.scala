@@ -108,12 +108,22 @@ object GamePlay extends App {
 
       // Checks if the response is still valid i.e. if you haven't asked already
       if (!remainingFeatures.contains(response) && acceptedStrings.contains(response)) {
-        println("you have already asked this question, try again")
+
+        val YELLOW = "\u001B[33m"
+        val BOLD = "\u001B[1m"
+        val RESET = "\u001B[0m"
+
+        println(s"\n${YELLOW}${BOLD}You have already asked this question, try again!${RESET} \n")
         gameLoop()
       }
       // if the user puts in an invalid string/input restart the turn
       else if (!acceptedStrings.contains(response)) {
-        println("That selection is not available please try again")
+
+        val RED = "\u001B[31m"
+        val BOLD = "\u001B[1m"
+        val RESET = "\u001B[0m"
+
+        println(s"\n${RED}${BOLD}That selection is not available please try again!${RESET} \n")
         gameLoop()
       }
       // initialised for subcategory i.e. colour
@@ -202,8 +212,27 @@ object GamePlay extends App {
 
 
       val numOfChar: Int = remainingCharacters.size
-      println(s"${numOfChar} out of 24 characters left on the board.")
+      println(s"${numOfChar} out of 24 characters left on the board. \n")
 
+      def allowGuessing ()= {
+
+        val BOLD = "\u001B[1m"
+        val UNDERLINE = "\u001B[4m"
+        val RESET = "\u001B[0m"
+        val PURPLE = "\u001B[35m"
+
+        Thread.sleep(2000)
+        if (remainingCharacters.size == 1) {
+          println(s"Ahhh the character is ${characterToGuess.name}!  \n")
+          gameLoop(true)
+        } else if (remainingCharacters.size <= 5) {
+          println (s"${BOLD}${UNDERLINE}${PURPLE}Do you want to take a guess now? Press 'G' or just continue with the game. ${RESET} \n")
+        } else {
+          gameLoop()
+        }
+      }
+
+      allowGuessing()
 
     }
 

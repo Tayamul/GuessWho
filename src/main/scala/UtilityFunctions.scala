@@ -1,3 +1,5 @@
+import GamePlay.{characterToGuess, remainingCharacters}
+
 object UtilityFunctions {
 
   // Finding a random character for you to guess
@@ -149,6 +151,5 @@ object UtilityFunctions {
     println(s"${BG_BRIGHT_WHITE}${BOLD}${UNDERLINE}${BLUE}G${RED}O${GREEN}O${YELLOW}D ${BLUE}L${PURPLE}U${CYAN}C${WHITE}K${RESET}")
     println()
   }
-
 
 }
