@@ -1,3 +1,5 @@
+import UtilityFunctions.{eyeColourMatch, genderMatch, hairColourMatch}
+
 import scala.collection.mutable
 
 
@@ -50,10 +52,10 @@ object GamePlay extends App {
   var remainingFeatures: Seq[String] = Seq("hair", "glasses", "facialhair", "eyecolour", "eyecolour", "eyecolour", "haircolour", "hat", "gender", "haircolour", "haircolour", "haircolour")
 
   // Remaining Hair Options
-  var remainingHairColours: Seq[String] = Seq("red", "brown", "blonde", "black", "grey")
+  var remainingHairColours: Seq[String] = Seq("1. brown", "2. blonde", "3. black")
 
   // Remaining Eye Options
-  var remainingEyeColours: Seq[String] = Seq("blue", "brown", "green")
+  var remainingEyeColours: Seq[String] = Seq("1. blue", "2. brown", "3. green")
 
   def gameLoop(exit: Boolean = false): Unit = {
 
@@ -134,25 +136,25 @@ object GamePlay extends App {
       response match {
         // When Your primary selection is haircolour
         case "haircolour" => {
-          println("Which colour hair:")
-          remainingHairColours.foreach {
-            case (element) => print(f"$element ")
-          }
-          value = scala.io.StdIn.readLine().toLowerCase()
+
+          value = hairColourMatch(response, remainingHairColours)
           if (characterToGuess.hairColour == value) include = true else include = false
+
+
         }
         case "eyecolour" => {
-          println("Which colour eye:")
-          remainingEyeColours.foreach {
-            case (element) => print(f"$element" + "\n")
-          }
-          value = scala.io.StdIn.readLine().toLowerCase()
+
+          value = eyeColourMatch(response: String, remainingEyeColours: Seq[String])
+
           if (characterToGuess.eyeColour == value) include = true else include = false
+
         }
         case "gender" => {
-          println("Male or Female?")
-          value = scala.io.StdIn.readLine().toLowerCase()
+
+          value = genderMatch(response)
+
           if (characterToGuess.gender == value) include = true else include = false
+
         }
         case "glasses" => {
           value = characterToGuess.glasses
@@ -197,6 +199,17 @@ object GamePlay extends App {
         // Once used, the feature is then found in the Seq and removed so it cannot be searched for again
         val index = remainingFeatures.indexOf(response)
         remainingFeatures = remainingFeatures.patch(index, Nil, 1)
+
+
+        def updateRemainingColours(response: String, value: Any): Unit = {
+          if (response == "haircolour") {
+            remainingHairColours = remainingHairColours.filterNot(_ == value)
+          } else if (response == "eyecolour") {
+            remainingEyeColours = remainingEyeColours.filterNot(_ == value)
+          }
+        }
+
+        updateRemainingColours(response, value)
       }
 
       // if filtering by a string value

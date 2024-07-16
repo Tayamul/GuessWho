@@ -152,4 +152,88 @@ object UtilityFunctions {
     println()
   }
 
+
+  def hairColourMatch(response: String, remainingHairColours: Seq[String]): String = {
+    println("\nSelect the hair colour:")
+    remainingHairColours.foreach {
+      case (element) => print(f"$element ")
+    }
+    println()
+    var value = scala.io.StdIn.readLine().toLowerCase()
+    println()
+    value match {
+      case "1" => {
+        println("Is their hair brown?")
+        value = "brown"
+      }
+      case "2" => {
+        println("Is their hair blonde?")
+        value = "blonde"
+      }
+      case "3" => {
+        println("Is their hair black?")
+        value = "black"
+      }
+      case _ => {
+        println("That is not an accepted input please try again")
+        hairColourMatch(response, remainingHairColours)
+      }
+    }
+    println()
+    value
+  }
+
+
+  def eyeColourMatch(response: String, remainingEyeColours: Seq[String]): String = {
+
+    println("\nWhich colour eye:")
+    remainingEyeColours.foreach {
+      case (element) => print(f"$element" + "\n")
+    }
+    println()
+    var value = scala.io.StdIn.readLine().toLowerCase()
+    println()
+    value match {
+      case "1" => {
+        println("Do they have blue eyes?")
+        value = "blue"
+      }
+      case "2" => {
+        println("Do they have brown eyes?")
+        value = "brown"
+      }
+      case "3" => {
+        println("Do they have green eyes?")
+        value = "green"
+      }
+      case _ =>
+        println("That is not an accepted input please try again")
+        eyeColourMatch(response,remainingEyeColours)
+    }
+    println()
+    value
+  }
+
+  def genderMatch (response: String): String = {
+
+      println("\nSelect the gender:")
+      println("1. male")
+      println("2. female")
+      println()
+      var value = scala.io.StdIn.readLine().toLowerCase()
+      println()
+      if(value == "1." || value == "1") {
+        println("1. Are they male?")
+        value = "male"
+      } else if (value == "2." || value == "2") {
+        println("1. Are they female?")
+        value = "female"
+      } else {
+        println("That is not an accepted input sorry ")
+        genderMatch(response)
+      }
+      println()
+      value
+    }
+
 }
