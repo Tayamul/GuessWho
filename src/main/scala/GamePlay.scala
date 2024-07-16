@@ -1,4 +1,4 @@
-import UtilityFunctions.{eyeColourMatch, genderMatch, hairColourMatch}
+import UtilityFunctions.{eyeColourMatch, formatValForRemove, genderMatch, hairColourMatch}
 
 import scala.collection.mutable
 
@@ -55,7 +55,7 @@ object GamePlay extends App {
   var remainingHairColours: Seq[String] = Seq("1. brown", "2. blonde", "3. black")
 
   // Remaining Eye Options
-  var remainingEyeColours: Seq[String] = Seq("1. blue", "2. brown", "3. green")
+  var remainingEyeColours: Seq[String] = Seq("1. brown", "2. blue", "3. green")
 
   def gameLoop(exit: Boolean = false): Unit = {
 
@@ -202,26 +202,20 @@ object GamePlay extends App {
 
 
         def updateRemainingColours(response: String, value: Any): Unit = {
+
+          val formattedValue = formatValForRemove(value)
+
           if (response == "haircolour") {
-            remainingHairColours = remainingHairColours.filterNot(_ == value)
+            remainingHairColours = remainingHairColours.filterNot(_ == formattedValue)
+            println(remainingHairColours)
           } else if (response == "eyecolour") {
-            remainingEyeColours = remainingEyeColours.filterNot(_ == value)
+            remainingEyeColours = remainingEyeColours.filterNot(_ == formattedValue)
           }
         }
 
         updateRemainingColours(response, value)
       }
 
-      // if filtering by a string value
-      if (response == "haircolour") {
-        // filter out the used value
-        remainingHairColours = remainingHairColours.filterNot(_ == value)
-      } else if (response == "eyecolour") {
-        // filter out the used value
-        remainingEyeColours = remainingEyeColours.filterNot(_ == value)
-      } else {
-
-      }
 
 
       val numOfChar: Int = remainingCharacters.size

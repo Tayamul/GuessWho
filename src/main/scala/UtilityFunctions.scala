@@ -156,7 +156,7 @@ object UtilityFunctions {
   def hairColourMatch(response: String, remainingHairColours: Seq[String]): String = {
     println("\nSelect the hair colour:")
     remainingHairColours.foreach {
-      case (element) => print(f"$element ")
+      case (element) => print(f"$element " + "\n")
     }
     println()
     var value = scala.io.StdIn.readLine().toLowerCase()
@@ -189,18 +189,21 @@ object UtilityFunctions {
     println("\nWhich colour eye:")
     remainingEyeColours.foreach {
       case (element) => print(f"$element" + "\n")
+
     }
+
+
     println()
     var value = scala.io.StdIn.readLine().toLowerCase()
     println()
     value match {
       case "1" => {
-        println("Do they have blue eyes?")
-        value = "blue"
-      }
-      case "2" => {
         println("Do they have brown eyes?")
         value = "brown"
+      }
+      case "2" => {
+        println("Do they have blue eyes?")
+        value = "blue"
       }
       case "3" => {
         println("Do they have green eyes?")
@@ -235,5 +238,16 @@ object UtilityFunctions {
       println()
       value
     }
+
+  def formatValForRemove (value: Any) : String = {
+    value match {
+      case "brown" => "1. brown"
+      case "blonde" => "2. blonde"
+      case "black" => "3. black"
+      case "blue" => "2. blue"
+      case "green" => "3. green"
+      case _ => ""
+    }
+  }
 
 }
