@@ -36,7 +36,7 @@ object GamePlay extends App {
   )
 
   // Finding a random character for you to guess
-  val characterToGuess = UtilityFunctions.randomChars(individualsMap)
+  val characterToGuess: Character = UtilityFunctions.randomChars(individualsMap)
 
   // exit boolean, when true the game ends
 
@@ -44,7 +44,7 @@ object GamePlay extends App {
   var remainingCharacters : Map [Int, Character] = individualsMap
 
   // Accepted strings to use for pattern matching
-  val acceptedStrings: Seq[String] = Seq("hair", "glasses", "facialhair", "eyecolour", "haircolour", "hat", "gender")
+  val acceptedStrings: Seq[String] = Seq("gender", "glasses", "facialhair", "hat", "eyecolour", "hair", "haircolour") // This order
 
   // Accepted Strings for pattern matching that have not been used yet
   var remainingFeatures: Seq[String] = Seq("hair", "glasses", "facialhair", "eyecolour", "eyecolour", "eyecolour", "haircolour", "hat", "gender", "haircolour", "haircolour", "haircolour")
@@ -63,7 +63,7 @@ object GamePlay extends App {
       val remainingQuestions: Set[String] = remainingFeatures.toSet
 
       // Tells you what questions are still to be asked
-      UtilityFunctions.gameQuestions(remainingQuestions)
+      UtilityFunctions.gameQuestions(remainingQuestions, acceptedStrings)
 
       // reads user response for main category
       var response: String = scala.io.StdIn.readLine().toLowerCase() // to lower case
@@ -213,53 +213,14 @@ object GamePlay extends App {
     startGame()
   }
 
-  val BG_BRIGHT_WHITE = "\u001B[107m"
-  val BLACK = "\u001B[30m"
-  val RED = "\u001B[31m"
-  val GREEN = "\u001B[32m"
-  val YELLOW = "\u001B[33m"
-  val BLUE = "\u001B[34m"
-  val PURPLE = "\u001B[35m"
-  val CYAN = "\u001B[36m"
-  val WHITE = "\u001B[37m"
-  val BOLD = "\u001B[1m"
-  val UNDERLINE = "\u001B[4m"
-  val RESET = "\u001B[0m"
-  val BG_BRIGHT_GREEN = "\u001B[102m"
-  val BG_BRIGHT_YELLOW = "\u001B[103m"
-
-  def intro (): Unit = {
-    println(s"${BG_BRIGHT_YELLOW}${BLACK}${BOLD}${UNDERLINE}!! * Ultimate Guess Who Experience * !!${RESET}")
-    println()
-    println(s"${BG_BRIGHT_GREEN}${BLACK}${BOLD}The rules are simple ....  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla placerat magna eget leo condimentum, sit amet porttitor ex congue. Proin dolor lorem, scelerisque in quam ut, finibus efficitur ligula. Donec pharetra tempor neque mattis tincidunt. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aenean dictum convallis iaculis. Duis rhoncus imperdiet velit. Phasellus ultricies nisl sit amet ipsum tempor dapibus.${RESET}")
-    println()
-
-  }
-
-
-  def initialHelpRules (): Unit = {
-    println(s"${BG_BRIGHT_GREEN}${BLACK}${BOLD}Whenever you are prompted for an answer you can also access the following commands:" +
-      s"\n Enter B -> To see the remaining characters on the board and their attributes \n Enter G -> To make a guess at who the character is \n Enter E -> To leave the game :( \n Enter R -> To see the rules and how to win  \n Enter H -> At any time to see these options again ${RESET}")
-    println()
-  }
-
-
-
-  def goodLuck (): Unit = {
-    println(s"${BG_BRIGHT_WHITE}${BOLD}${UNDERLINE}${BLUE}G${RED}O${GREEN}O${YELLOW}D ${BLUE}L${PURPLE}U${CYAN}C${WHITE}K${RESET}")
-    println()
-  }
-
-
-
 
   def startGame(): Unit = {
     println("Type Start to Start")
     val response: String = scala.io.StdIn.readLine().toLowerCase()
     if (response == "start") {
-      intro()
-      initialHelpRules()
-      goodLuck()
+      UtilityFunctions.intro()
+      UtilityFunctions.initialHelpRules()
+      UtilityFunctions.goodLuck()
       gameLoop()
     }
   }
