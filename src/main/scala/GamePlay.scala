@@ -68,7 +68,7 @@ object GamePlay extends App {
       UtilityFunctions.gameQuestions(remainingQuestions, acceptedStrings)
 
       // reads user response for main category
-      var response: String = scala.io.StdIn.readLine().toLowerCase() // to lower case
+      var response: String = scala.io.StdIn.readLine().toLowerCase().trim() // to lower case
 
       // In Game Options
       if (response == "b") {
@@ -85,8 +85,11 @@ object GamePlay extends App {
         UtilityFunctions.printAllRemainingChars(remainingCharacters: Map[Int, Character])
         println("Which character to you think is the undercover agent?")
         println("Be careful, get it wrong and the game ends!")
+        println("To exit guess, type 'X'")
         val guess: String = scala.io.StdIn.readLine().toLowerCase()
-        if(characterToGuess.name.toLowerCase() == guess) {
+        if (guess == "x") {
+          gameLoop()
+        } else if (characterToGuess.name.toLowerCase() == guess) {
 
           def gameWin (): Unit = {
             println("🥳🎉 Congratulations!! 🥳🎉")
@@ -107,6 +110,16 @@ object GamePlay extends App {
         }
       }
 
+
+      response = response match {
+        case "1" => "gender"
+        case "2" => "glasses"
+        case "3" => "facialhair"
+        case "4" => "hat"
+        case "5" => "eyecolour"
+        case "6" => "hair"
+        case "7" => "haircolour"
+      }
 
       // Checks if the response is still valid i.e. if you haven't asked already
       if (!remainingFeatures.contains(response) && acceptedStrings.contains(response)) {
@@ -207,7 +220,6 @@ object GamePlay extends App {
 
           if (response == "haircolour") {
             remainingHairColours = remainingHairColours.filterNot(_ == formattedValue)
-            println(remainingHairColours)
           } else if (response == "eyecolour") {
             remainingEyeColours = remainingEyeColours.filterNot(_ == formattedValue)
           }
