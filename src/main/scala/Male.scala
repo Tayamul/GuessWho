@@ -1,3 +1,3 @@
-case class Male (name: String, hasHair: Boolean, hairColour: String, glasses: Boolean, hat: Boolean, eyeColour: String, facialHair: Boolean) extends Character {
+case class Male (name: String, hasHair: Boolean, glasses: Boolean, facialHair: Boolean, hairColour: String, hat: Boolean, eyeColour: String) extends Character {
   val gender: String = "male"
 }
