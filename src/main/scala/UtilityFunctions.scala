@@ -1,4 +1,4 @@
-import GamePlay.{characterToGuess, remainingCharacters, remainingFeatures}
+import GamePlay.{characterToGuess, gameLoop, remainingCharacters, remainingFeatures}
 
 import scala.collection.immutable.{AbstractSeq, LinearSeq}
 
@@ -48,7 +48,7 @@ object UtilityFunctions {
   }
 
   // Tells you what questions are still to be asked
-  def gameQuestions(remainingQuestions: Set[String], acceptedStrings : Seq[String]): Unit = {
+  def gameQuestions(remainingQuestions: Set[String], acceptedStrings: Seq[String]): Unit = {
     println("Ask another question.")
     println("You can pick from the following questions by typing the number:")
 
@@ -63,6 +63,24 @@ object UtilityFunctions {
       case "eyecolour" => println("5. Do they have _(colour)_ eyes?")
       case "hashair" => println("6. Do they have hair?")
       case "haircolour" => println("7. Is their hair _(colour)_ ?")
+    }
+  }
+
+  def checkResponse (response: String, remainingFeatures: Seq[String], acceptedStrings: Seq[String]): Either[String, Unit] = {
+    if (!remainingFeatures.contains(response) && acceptedStrings.contains(response)) {
+      val YELLOW = "\u001B[33m"
+      val BOLD = "\u001B[1m"
+      val RESET = "\u001B[0m"
+
+      Left(s"\n${YELLOW}${BOLD}You have already asked this question, try another one!${RESET} \n")
+    } else if (!acceptedStrings.contains(response)) {
+      val RED = "\u001B[31m"
+      val BOLD = "\u001B[1m"
+      val RESET = "\u001B[0m"
+
+      Left(s"\n${RED}${BOLD}That selection is not available, please try again!${RESET} \n")
+    } else {
+      Right(())
     }
   }
 

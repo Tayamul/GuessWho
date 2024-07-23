@@ -86,7 +86,7 @@ object GamePlay extends App {
             case "x" => gameLoop()
             case char if (characterToGuess.name.toLowerCase() == char) =>
               def gameWin (): Unit = {
-                println("🥳🎉 Congratulations!! 🥳🎉")
+                println(s"🥳🎉 Congratulations!! 🥳🎉 The character is ${characterToGuess.name}!")
                 Thread sleep 2000
                 gameLoop(exit = true)
               }
@@ -114,25 +114,13 @@ object GamePlay extends App {
       }
 
       // Checks if the response is still valid i.e. if you haven't asked already
-      if (!remainingFeatures.contains(response) && acceptedStrings.contains(response)) {
-
-        val YELLOW = "\u001B[33m"
-        val BOLD = "\u001B[1m"
-        val RESET = "\u001B[0m"
-
-        println(s"\n${YELLOW}${BOLD}You have already asked this question, try again!${RESET} \n")
-        gameLoop()
+      UtilityFunctions.checkResponse(response, remainingFeatures, acceptedStrings) match {
+        case Left(errorMessage) =>
+          println(errorMessage)
+          gameLoop()
+        case Right(_) =>
       }
-      // if the user puts in an invalid string/input restart the turn
-      else if (!acceptedStrings.contains(response)) {
 
-        val RED = "\u001B[31m"
-        val BOLD = "\u001B[1m"
-        val RESET = "\u001B[0m"
-
-        println(s"\n${RED}${BOLD}That selection is not available please try again!${RESET} \n")
-        gameLoop()
-      }
       // initialised for subcategory i.e. colour
       var value: Any = ""
       var include: Boolean = true
@@ -225,7 +213,7 @@ object GamePlay extends App {
 
         Thread.sleep(2000)
         if (remainingCharacters.size == 1) {
-          println(s"Ahhh the character is ${characterToGuess.name}!  \n")
+          println(s"🥳🎉 Congratulations!! 🥳🎉 The character is ${characterToGuess.name}!  \n")
           gameLoop(true)
         } else if (remainingCharacters.size <= 5) {
           println (s"${BOLD}${UNDERLINE}${PURPLE}Do you want to take a guess now? Press 'G' or just continue with the game. ${RESET} \n")
