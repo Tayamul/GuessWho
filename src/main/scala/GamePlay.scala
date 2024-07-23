@@ -108,7 +108,7 @@ object GamePlay extends App {
         case "3" => "facialhair"
         case "4" => "hat"
         case "5" => "eyecolour"
-        case "6" => "hair"
+        case "6" => "hashair"
         case "7" => "haircolour"
         case _ => ""
       }
@@ -161,7 +161,7 @@ object GamePlay extends App {
         case "hat" => {
           value = characterToGuess.hat
         }
-        case "hair" => {
+        case "hashair" => {
           value = characterToGuess.hasHair
         }
       }
@@ -172,7 +172,7 @@ object GamePlay extends App {
       // This will eventually check character to Guess!!!!
       if (include) {
         println(s"The mystery character does have ${response} ${value}, good option!")
-        if (response == "hair" && !characterToGuess.hasHair) {
+        if (response == "hashair" && !characterToGuess.hasHair) {
           remainingFeatures = remainingFeatures.filterNot(_ == "haircolour")
         }
         // This filters the remaining characters in the game board to get rid of those that match the criteria

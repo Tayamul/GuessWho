@@ -1,4 +1,6 @@
-import GamePlay.{characterToGuess, remainingCharacters}
+import GamePlay.{characterToGuess, remainingCharacters, remainingFeatures}
+
+import scala.collection.immutable.{AbstractSeq, LinearSeq}
 
 object UtilityFunctions {
 
@@ -49,9 +51,11 @@ object UtilityFunctions {
   def gameQuestions(remainingQuestions: Set[String], acceptedStrings : Seq[String]): Unit = {
     println("Ask another question.")
     println("You can pick from the following questions by typing the number:")
-    acceptedStrings.filter {
-      case feature => remainingQuestions.contains(feature)
-    }.foreach{
+
+    val questions = for {
+      feature <- acceptedStrings
+      if (remainingQuestions.contains(feature))
+    } yield feature match {
       case "gender" => println("1. Are they _(male/female)_ ?")
       case "glasses" => println("2. Do they wear glasses?")
       case "facialhair" => println("3. Do they have facial hair?")
