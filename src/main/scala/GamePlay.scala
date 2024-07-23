@@ -113,6 +113,7 @@ object GamePlay extends App {
         case "5" => "eyecolour"
         case "6" => "hair"
         case "7" => "haircolour"
+        case _ => "Question doesn't exist!"
       }
 
       // Checks if the response is still valid i.e. if you haven't asked already
