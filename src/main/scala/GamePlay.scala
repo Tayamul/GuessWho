@@ -40,10 +40,10 @@ object GamePlay extends App {
   var remainingCharacters : Map [Int, Character] = individualsMap
 
   // Accepted strings to use for pattern matching
-  val acceptedStrings: Seq[String] = Seq("gender", "glasses", "facialhair", "hat", "eyecolour", "hair", "haircolour") // This order
+  val acceptedStrings: Seq[String] = Seq("gender", "glasses", "facialhair", "hat", "eyecolour", "hashair", "haircolour") // This order
 
   // Accepted Strings for pattern matching that have not been used yet
-  var remainingFeatures: Seq[String] = Seq("hair", "glasses", "facialhair", "eyecolour", "eyecolour", "eyecolour", "haircolour", "hat", "gender", "haircolour", "haircolour", "haircolour")
+  var remainingFeatures: Seq[String] = Seq("hashair", "glasses", "facialhair", "eyecolour", "eyecolour", "eyecolour", "haircolour", "hat", "gender", "haircolour", "haircolour", "haircolour")
 
   // Remaining Hair Options
   var remainingHairColours: Seq[String] = Seq("1. brown", "2. blonde", "3. black")
@@ -65,45 +65,42 @@ object GamePlay extends App {
       var response: String = scala.io.StdIn.readLine().toLowerCase().trim() // to lower case
 
       // In Game Options
-      if (response == "b") {
-        UtilityFunctions.printAllRemainingChars(remainingCharacters: Map[Int, Character])
-        gameLoop()
-      } else if (response == "h") {
-        UtilityFunctions.helpMe()
-        gameLoop()
-      } else if (response == "e") {
-        gameLoop(exit = true)
-      } else if (response == "r") {
-        println("Rules")
-      } else if (response == "g") {
-        UtilityFunctions.printAllRemainingChars(remainingCharacters: Map[Int, Character])
-        println("Which character to you think is the undercover agent?")
-        println("Be careful, get it wrong and the game ends!")
-        println("To exit guess, type 'X'")
-        val guess: String = scala.io.StdIn.readLine().toLowerCase()
-        if (guess == "x") {
+      response match {
+        case "b" =>
+          UtilityFunctions.printAllRemainingChars(remainingCharacters: Map[Int, Character])
           gameLoop()
-        } else if (characterToGuess.name.toLowerCase() == guess) {
-
-          def gameWin (): Unit = {
-            println("🥳🎉 Congratulations!! 🥳🎉")
-            Thread sleep 2000
-            gameLoop(exit = true)
+        case "h" =>
+          UtilityFunctions.helpMe()
+          gameLoop()
+        case "e" =>
+          gameLoop(exit = true)
+        case "r" =>
+          println("Rules")
+        case "g" =>
+          UtilityFunctions.printAllRemainingChars(remainingCharacters: Map[Int, Character])
+          println("Which character to you think is the undercover agent?")
+          println("Be careful, get it wrong and the game ends!")
+          println("To exit guess, type 'X'")
+          val guess: String = scala.io.StdIn.readLine().toLowerCase().trim()
+          guess match {
+            case "x" => gameLoop()
+            case char if (characterToGuess.name.toLowerCase() == char) =>
+              def gameWin (): Unit = {
+                println("🥳🎉 Congratulations!! 🥳🎉")
+                Thread sleep 2000
+                gameLoop(exit = true)
+              }
+              gameWin()
+            case _ =>
+              def gameLose (): Unit = {
+                println("Boooo you suck!!")
+                Thread sleep 2000
+                gameLoop(exit = true)
+              }
+              gameLose()
           }
-
-          gameWin()
-        } else {
-
-          def gameLose (): Unit = {
-            println("Boooo you suck!!")
-            Thread sleep 2000
-            gameLoop(exit = true)
-          }
-
-          gameLose()
-        }
+        case _ => println("")
       }
-
 
       response = response match {
         case "1" => "gender"
@@ -113,7 +110,7 @@ object GamePlay extends App {
         case "5" => "eyecolour"
         case "6" => "hair"
         case "7" => "haircolour"
-        case _ => "Question doesn't exist!"
+        case _ => ""
       }
 
       // Checks if the response is still valid i.e. if you haven't asked already

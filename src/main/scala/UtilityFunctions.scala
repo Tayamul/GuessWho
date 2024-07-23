@@ -57,7 +57,7 @@ object UtilityFunctions {
       case "facialhair" => println("3. Do they have facial hair?")
       case "hat" => println("4. Are they wearing a hat?")
       case "eyecolour" => println("5. Do they have _(colour)_ eyes?")
-      case "hair" => println("6. Do they have hair?")
+      case "hashair" => println("6. Do they have hair?")
       case "haircolour" => println("7. Is their hair _(colour)_ ?")
     }
   }
